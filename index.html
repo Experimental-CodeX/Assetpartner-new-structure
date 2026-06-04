@@ -86,7 +86,7 @@
   .nav-logo-sub {
     font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 400;
     color: rgba(255,255,255,0.5); letter-spacing: 0.5px; display: block;
-    margin-top: -10px;
+    margin-top: -12px;
   }
 
   .nav-links { display: flex; align-items: center; gap: 32px; }
@@ -108,7 +108,7 @@
   /* ── HERO ── */
   .hero {
     background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 55%, #2563EB 100%);
-    padding: 80px 0 72px; position: relative; overflow: hidden;
+    position: relative; overflow: hidden;
   }
 
   .hero::before {
@@ -123,6 +123,23 @@
   }
 
   .hero-inner { max-width: 1140px; margin: 0 auto; padding: 0 40px; position: relative; z-index: 1; }
+
+  .hero-layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 56px;
+    align-items: center;
+    padding: 80px 0 72px;
+  }
+
+  .hero-left { display: flex; flex-direction: column; }
+  .hero-right { display: flex; align-items: flex-start; justify-content: flex-end; }
+
+  .hero-rule {
+    width: 56px; height: 2px;
+    background: linear-gradient(90deg, #86EFAC, rgba(134,239,172,0.2));
+    margin: 20px 0 24px;
+  }
 
   .hero-tag {
     display: inline-flex; align-items: center; gap: 7px;
@@ -169,7 +186,7 @@
 
   .btn-arrow { font-size: 18px; }
 
-  .hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 640px; }
+  .hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 40px; }
 
   .hero-stat {
     background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.11);
@@ -182,6 +199,72 @@
   }
 
   .hero-stat-label { font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.4; }
+
+  /* ── HERO STATUS CARD ── */
+  .hero-status-card {
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .hero-status-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 20px;
+    background: rgba(201,168,76,0.1);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+  }
+
+  .hero-status-crown {
+    font-size: 20px; color: #FDE047;
+  }
+
+  .hero-status-eyebrow {
+    font-size: 10px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: #FDE047; margin-bottom: 2px;
+  }
+
+  .hero-status-title {
+    font-family: 'Sora', sans-serif; font-size: 14px;
+    font-weight: 700; color: #fff;
+  }
+
+  .hero-status-table {
+    display: flex; flex-direction: column;
+  }
+
+  .hero-status-row {
+    display: grid; grid-template-columns: 1fr 110px 110px;
+    align-items: center;
+    padding: 9px 20px;
+    font-size: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .hero-status-row:last-child { border-bottom: none; }
+  .hero-status-row span:first-child { color: rgba(255,255,255,0.65); }
+
+  .hero-status-thead {
+    background: rgba(0,0,0,0.2);
+    padding: 7px 20px;
+  }
+
+  .hero-status-col {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+    color: rgba(255,255,255,0.35); text-align: center;
+  }
+  .partner-col { color: #86EFAC; }
+
+  .hero-yes {
+    color: #86EFAC; font-weight: 700; font-size: 12px; text-align: center;
+  }
+  .hero-no {
+    color: #F87171; font-weight: 500; font-size: 12px; text-align: center;
+  }
+
+  @media (max-width: 600px) {
+    .hero-status-row { grid-template-columns: 1fr 80px 80px; padding: 8px 14px; }
+  }
 
   /* ── WHAT IS — BENEFITS STRIP ── */
   .what-benefits {
@@ -238,6 +321,41 @@
     .what-benefit-divider { display: none; }
     .what-benefit-item { padding: 0; }
     .damage-box { flex-direction: column; }
+  }
+
+  /* ── EARNING HIGHLIGHT ── */
+  .earning-highlight {
+    display: flex; align-items: center; gap: 24px;
+    background: linear-gradient(135deg, #0D1B6E, #1A35C7);
+    border-radius: 16px; padding: 28px 36px; margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .earning-highlight-icon { font-size: 36px; flex-shrink: 0; }
+
+  .earning-highlight-text { flex: 1; min-width: 220px; }
+
+  .earning-highlight-text strong {
+    display: block; font-family: 'Sora', sans-serif;
+    font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px;
+  }
+
+  .earning-highlight-text p { font-size: 13px; color: rgba(255,255,255,0.72); line-height: 1.7; }
+
+  .earning-highlight-stat { text-align: right; flex-shrink: 0; }
+
+  .earning-highlight-num {
+    font-family: 'Sora', sans-serif; font-size: 32px; font-weight: 800;
+    color: #86EFAC; line-height: 1;
+  }
+
+  .earning-highlight-num span { font-size: 16px; font-weight: 500; color: rgba(134,239,172,0.7); }
+
+  .earning-highlight-label { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 4px; }
+
+  @media (max-width: 600px) {
+    .earning-highlight { flex-direction: column; align-items: flex-start; }
+    .earning-highlight-stat { text-align: left; }
   }
 
   /* ── WHAT IS SHAREPAL ── */
@@ -331,6 +449,49 @@
   .benefit-card p { font-size: 12px; color: var(--muted); line-height: 1.6; }
 
   /* ── PAYOUT CLARITY ── */
+  .payout-track-record {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+    align-items: center;
+    background: linear-gradient(135deg, #0D1B6E, #1A35C7);
+    border-radius: 16px;
+    padding: 32px 36px;
+    margin-bottom: 24px;
+    gap: 0;
+  }
+
+  .track-stat { text-align: center; padding: 0 16px; }
+
+  .track-num {
+    font-family: 'Sora', sans-serif; font-size: 32px; font-weight: 800;
+    color: #86EFAC; line-height: 1; margin-bottom: 8px;
+  }
+
+  .track-label {
+    font-size: 12px; color: rgba(255,255,255,0.6);
+    line-height: 1.5; font-weight: 400;
+  }
+
+  .track-divider {
+    width: 1px; height: 56px;
+    background: rgba(255,255,255,0.12);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 900px) {
+    .payout-track-record {
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      padding: 24px;
+    }
+    .track-divider { display: none; }
+  }
+
+  @media (max-width: 480px) {
+    .payout-track-record { grid-template-columns: 1fr; }
+  }
+
+
   .payout-banner {
     background: linear-gradient(135deg, #0D1B6E, var(--blue));
     border-radius: 18px; padding: 44px 40px; text-align: center; margin-bottom: 24px;
@@ -565,6 +726,8 @@
     .nav-inner { padding: 0 24px; }
     .nav-links { display: none; }
     .hero-inner { padding: 0 24px; }
+    .hero-layout { grid-template-columns: 1fr; padding: 48px 0; gap: 36px; }
+    .hero-right { justify-content: flex-start; }
     .hero-stats { grid-template-columns: repeat(3, 1fr); }
     .trio-grid { grid-template-columns: 1fr; }
     .steps-grid { grid-template-columns: 1fr; }
@@ -580,12 +743,166 @@
 
   @media (max-width: 600px) {
     .hero h1 { font-size: 28px; }
-    .hero-stats { grid-template-columns: 1fr; max-width: 280px; }
+    .hero-layout { padding: 40px 0; }
+    .hero-stats { grid-template-columns: 1fr; }
     .benefits-grid { grid-template-columns: 1fr; }
     .footer-grid { grid-template-columns: 1fr; }
     .tenure-box { flex-direction: column; align-items: flex-start; }
     .dash-cards { grid-template-columns: 1fr; }
   }
+  /* ── WHY SECTION ── */
+  .why-section { background: var(--navy); }
+
+  .why-section .section-badge { background: rgba(255,255,255,0.15); }
+  .why-section .section-title { color: #fff; }
+  .why-section .section-sub { color: rgba(255,255,255,0.6); }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .why-card {
+    border-radius: 16px;
+    padding: 32px 28px;
+  }
+
+  .why-card-header {
+    display: flex; align-items: flex-start; gap: 16px; margin-bottom: 24px;
+  }
+
+  .why-card-icon {
+    width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0;
+    background: rgba(26,53,199,0.4); border: 1px solid rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; color: #fff; font-weight: 700;
+  }
+  .why-card-icon-red { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.3); color: #F87171; }
+  .why-card-icon-gold { background: rgba(234,179,8,0.15); border-color: rgba(234,179,8,0.3); color: #FDE047; font-size: 22px; }
+  .why-card-icon-green { background: rgba(34,197,94,0.12); border-color: rgba(34,197,94,0.3); font-size: 22px; }
+
+  .why-card-eyebrow {
+    font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 4px;
+  }
+  .why-eyebrow-red { color: #FCA5A5; }
+  .why-eyebrow-gold { color: #FDE047; }
+  .why-eyebrow-green { color: #86EFAC; }
+
+  .why-card h3 {
+    font-size: 17px; font-weight: 700; line-height: 1.3;
+  }
+
+  /* GET card */
+  .why-get { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
+  .why-get h3 { color: #fff; }
+
+  /* LOSE card */
+  .why-lose { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.15); }
+  .why-lose h3 { color: #FECACA; }
+
+  /* VIP card */
+  .why-vip { background: rgba(234,179,8,0.05); border: 1px solid rgba(234,179,8,0.18); }
+  .why-vip h3 { color: #FEF08A; }
+
+  /* ALTRUISM card */
+  .why-altruism { background: rgba(34,197,94,0.05); border: 1px solid rgba(34,197,94,0.15); }
+  .why-altruism h3 { color: #BBF7D0; }
+
+  /* LIST */
+  .why-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .why-list li {
+    font-size: 13px; line-height: 1.5;
+    display: flex; align-items: flex-start; gap: 10px;
+    color: rgba(255,255,255,0.75);
+  }
+  .why-check { color: #86EFAC; font-weight: 700; font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+  .why-cross { color: #F87171; font-weight: 700; font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+  /* COMPARE TABLE */
+  .why-compare { display: flex; flex-direction: column; gap: 0; border-radius: 10px; overflow: hidden; }
+  .why-compare-row {
+    display: grid; grid-template-columns: 1fr auto auto;
+    gap: 12px; align-items: center;
+    padding: 10px 14px;
+    font-size: 12px;
+    background: rgba(255,255,255,0.04);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .why-compare-row:last-child { border-bottom: none; }
+  .why-compare-row span:first-child { color: rgba(255,255,255,0.7); }
+  .why-compare-header { background: rgba(0,0,0,0.2); padding: 8px 14px; }
+  .why-compare-label { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; color: rgba(255,255,255,0.45); text-align: center; min-width: 72px; }
+  .partner-label { color: #86EFAC; }
+  .why-yes { color: #86EFAC; font-weight: 700; font-size: 12px; text-align: center; min-width: 72px; }
+  .why-no { color: #F87171; font-weight: 600; font-size: 12px; text-align: center; min-width: 72px; }
+
+  /* ALTRUISM */
+  .why-altruism-text {
+    font-size: 13px; color: rgba(255,255,255,0.65); line-height: 1.75;
+    margin-bottom: 24px;
+  }
+  .why-altruism-stats { display: flex; gap: 32px; flex-wrap: wrap; }
+  .why-altruism-num {
+    font-family: 'Sora', sans-serif; font-size: 26px; font-weight: 800;
+    color: #86EFAC; line-height: 1;
+  }
+  .why-altruism-label { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 4px; }
+
+  @media (max-width: 900px) {
+    .why-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── SUSTAINABILITY BANNER ── */
+  .sustainability-banner {
+    background: linear-gradient(135deg, #052e16, #14532d);
+    border-top: 1px solid rgba(34,197,94,0.2);
+    border-bottom: 1px solid rgba(34,197,94,0.2);
+    padding: 36px 0;
+  }
+
+  .sustain-inner {
+    display: flex; align-items: center; gap: 32px; flex-wrap: wrap;
+  }
+
+  .sustain-icon { font-size: 40px; flex-shrink: 0; }
+
+  .sustain-text {
+    flex: 1; min-width: 260px;
+    font-size: 13px; color: rgba(255,255,255,0.72); line-height: 1.75;
+  }
+
+  .sustain-text strong {
+    display: block; font-family: 'Sora', sans-serif;
+    font-size: 15px; font-weight: 700; color: #86EFAC; margin-bottom: 6px;
+  }
+
+  .sustain-stats {
+    display: flex; align-items: center; gap: 24px; flex-shrink: 0;
+  }
+
+  .sustain-stat { text-align: center; }
+
+  .sustain-num {
+    display: block; font-family: 'Sora', sans-serif;
+    font-size: 28px; font-weight: 800; color: #86EFAC; line-height: 1;
+  }
+
+  .sustain-label {
+    font-size: 11px; color: rgba(255,255,255,0.45);
+    line-height: 1.5; margin-top: 4px; display: block;
+  }
+
+  .sustain-divider {
+    width: 1px; height: 48px;
+    background: rgba(134,239,172,0.2); flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    .sustain-stats { width: 100%; justify-content: flex-start; }
+  }
+
 </style>
 </head>
 <body>
@@ -609,33 +926,91 @@
 <!-- ── HERO ── -->
 <section class="hero">
   <div class="hero-inner">
-    <div class="hero-tag">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      Asset-Backed Monthly Earnings
-    </div>
-    <h1>Pay for an Asset.<br><span class="green">We Rent It.</span><br>You Earn Every Month.</h1>
-    <p class="hero-sub">Choose a high-demand rental asset, pay SharePal for purchasing it, and earn monthly payouts — directly to your bank. At the end of your tenure, take the asset or its full cash value back.</p>
-    <div class="hero-btns">
-      <button class="btn-primary">
-        <span class="btn-arrow">→</span> Become an Asset Partner
-      </button>
-      <button class="btn-ghost">
-        ▶ See How It Works
-      </button>
-    </div>
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <div class="hero-stat-num">₹15+ Cr</div>
-        <div class="hero-stat-label">Total Assets Purchased</div>
+    <div class="hero-layout">
+
+      <!-- LEFT: COPY -->
+      <div class="hero-left">
+        <div class="hero-tag">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Exclusive Asset Partner
+        </div>
+        <h1>Pay for an Asset.<br><span class="green">We Rent It.</span><br>You Earn Every Month.</h1>
+        <div class="hero-rule"></div>
+        <p class="hero-sub">Choose a high-demand rental asset, pay SharePal for purchasing it, and earn monthly payouts — directly to your bank. At the end of your tenure, receive the full asset purchase cost back as cash.</p>
+        <div class="hero-btns">
+          <button class="btn-primary">
+            <span class="btn-arrow">→</span> Become an Asset Partner
+          </button>
+          <button class="btn-ghost">
+            ▶ See How It Works
+          </button>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-num">₹15+ Cr</div>
+            <div class="hero-stat-label">Total Assets Purchased</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">+80%</div>
+            <div class="hero-stat-label">Average Asset Utilization</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">3,000+</div>
+            <div class="hero-stat-label">Active Asset Partners</div>
+          </div>
+        </div>
       </div>
-      <div class="hero-stat">
-        <div class="hero-stat-num">+80%</div>
-        <div class="hero-stat-label">Average Asset Utilization</div>
+
+      <!-- RIGHT: STATUS CARD -->
+      <div class="hero-right">
+        <div class="hero-status-card">
+          <div class="hero-status-header">
+            <span class="hero-status-crown">♛</span>
+            <div>
+              <div class="hero-status-eyebrow">Exclusive Perks</div>
+              <div class="hero-status-title">Asset Partner vs. Regular User</div>
+            </div>
+          </div>
+          <div class="hero-status-table">
+            <div class="hero-status-row hero-status-thead">
+              <span></span>
+              <span class="hero-status-col partner-col">Partner</span>
+              <span class="hero-status-col">Regular</span>
+            </div>
+            <div class="hero-status-row">
+              <span>Earnings Payout</span>
+              <span class="hero-yes">✓ Yes</span>
+              <span class="hero-no">✗ No</span>
+            </div>
+            <div class="hero-status-row">
+              <span>Rent Discount</span>
+              <span class="hero-yes">10% Off</span>
+              <span class="hero-no">Full Price</span>
+            </div>
+            <div class="hero-status-row">
+              <span>Cashback</span>
+              <span class="hero-yes">10%</span>
+              <span class="hero-no">0%</span>
+            </div>
+            <div class="hero-status-row">
+              <span>Wallet Credits</span>
+              <span class="hero-yes">3%</span>
+              <span class="hero-no">0%</span>
+            </div>
+            <div class="hero-status-row">
+              <span>Profile Status</span>
+              <span class="hero-yes">VIP Badge</span>
+              <span class="hero-no">Standard</span>
+            </div>
+            <div class="hero-status-row">
+              <span>Support</span>
+              <span class="hero-yes">Priority</span>
+              <span class="hero-no">Standard</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="hero-stat">
-        <div class="hero-stat-num">3,000+</div>
-        <div class="hero-stat-label">Active Asset Partners</div>
-      </div>
+
     </div>
   </div>
 </section>
@@ -652,15 +1027,15 @@
         <div class="trio-icon">
           <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
         </div>
-        <h4>Sponsor SharePal in Purchasing an Asset</h4>
-        <p>Choose from curated high-demand assets and pay SharePal for purchasing it. The asset gets a unique serial number linked to your account on the dashboard.</p>
+        <h4>Pay SharePal for Purchasing an Asset</h4>
+        <p>Choose from curated high-demand assets and pay SharePal for purchasing it. The asset gets a unique serial number linked to you.</p>
       </div>
       <div class="trio-card">
         <div class="trio-icon">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
         </div>
         <h4>We Manage Everything</h4>
-        <p>SharePal manages, maintains, and rents the asset on our platform. You do nothing. Zero operational effort on your side.</p>
+        <p>SharePal manages, maintains, and rents the asset on our platform. You enjoy the benefits. Zero operational effort on your side.</p>
       </div>
       <div class="trio-card">
         <div class="trio-icon green">
@@ -671,29 +1046,26 @@
       </div>
     </div>
 
+    <!-- EARNING PAYOUTS HIGHLIGHT -->
+    <div class="earning-highlight">
+      <div class="earning-highlight-icon">💰</div>
+      <div class="earning-highlight-text">
+        <strong>Earning Payouts — The Core Benefit</strong>
+        <p>As an Asset Partner, you receive assured earnings credited directly to your bank account — on the exact same date every month, for your entire tenure. No delays, no fluctuations, no conditions.</p>
+      </div>
+      <div class="earning-highlight-stat">
+        <div class="earning-highlight-num">₹4,241<span>/mo</span></div>
+        <div class="earning-highlight-label">Example monthly payout</div>
+      </div>
+    </div>
+
     <!-- BENEFITS HIGHLIGHT STRIP -->
     <div class="what-benefits">
-      <div class="what-benefit-item">
-        <div class="what-benefit-icon">💰</div>
-        <div>
-          <strong>Earning Payouts</strong>
-          <span>Same date every month, no fluctuations</span>
-        </div>
-      </div>
-      <div class="what-benefit-divider"></div>
       <div class="what-benefit-item">
         <div class="what-benefit-icon">👛</div>
         <div>
           <strong>3% Instant Wallet Credit</strong>
           <span>100% redeemable on SharePal rentals</span>
-        </div>
-      </div>
-      <div class="what-benefit-divider"></div>
-      <div class="what-benefit-item">
-        <div class="what-benefit-icon">✅</div>
-        <div>
-          <strong>Skip Verification</strong>
-          <span>Auto-approved on all rental orders</span>
         </div>
       </div>
       <div class="what-benefit-divider"></div>
@@ -706,14 +1078,6 @@
       </div>
       <div class="what-benefit-divider"></div>
       <div class="what-benefit-item">
-        <div class="what-benefit-icon">🏅</div>
-        <div>
-          <strong>Partner Profile Badge</strong>
-          <span>Visible badge on your SharePal profile</span>
-        </div>
-      </div>
-      <div class="what-benefit-divider"></div>
-      <div class="what-benefit-item">
         <div class="what-benefit-icon">🎟️</div>
         <div>
           <strong>5% Exclusive Rent Discount</strong>
@@ -722,18 +1086,10 @@
       </div>
       <div class="what-benefit-divider"></div>
       <div class="what-benefit-item">
-        <div class="what-benefit-icon">🎁</div>
+        <div class="what-benefit-icon">🎧</div>
         <div>
-          <strong>Exclusive Coupons</strong>
-          <span>Partner-only codes unavailable to others</span>
-        </div>
-      </div>
-      <div class="what-benefit-divider"></div>
-      <div class="what-benefit-item">
-        <div class="what-benefit-icon">🚀</div>
-        <div>
-          <strong>Priority Delivery Slots</strong>
-          <span>Skip the queue, every time</span>
+          <strong>Priority Customer Support</strong>
+          <span>Jump the queue, faster resolutions</span>
         </div>
       </div>
       <div class="what-benefit-divider"></div>
@@ -741,15 +1097,15 @@
         <div class="what-benefit-icon">✨</div>
         <div>
           <strong>And More</strong>
-          <span>New perks added regularly for partners</span>
+          <span>Profile Badge &amp; Exclusive Pricing</span>
         </div>
       </div>
     </div>
 
     <div class="tenure-box">
       <div>
-        <h4>At the End of Your Tenure — You Choose</h4>
-        <p>Take the asset back physically, or receive its full original purchase cost as cash. Your decision.</p>
+        <h4>At the End of Your Tenure</h4>
+        <p>Receive the full original asset purchase cost back — directly to your bank account.</p>
       </div>
       <div class="tenure-pills">
         <div class="pill active">12 Months</div>
@@ -791,7 +1147,7 @@
       <div class="step">
         <div class="step-num">05</div>
         <h4>End of Tenure</h4>
-        <p>Take the asset back — or receive its full purchase cost as cash. Your choice.</p>
+        <p>Receive the full original asset purchase cost back.</p>
       </div>
     </div>
   </div>
@@ -802,14 +1158,9 @@
   <div class="container">
     <div class="section-badge">Exclusive Perks</div>
     <h2 class="section-title">Asset Partner Privileges</h2>
-    <p class="section-sub">Becoming an Asset Partner unlocks a lot of exclusive benefits — financial and platform-wide.</p>
+    <p class="section-sub">Becoming an Asset Partner unlocks a lot of exclusive benefits —</p>
 
     <div class="benefits-grid">
-      <div class="benefit-card">
-        <div class="benefit-icon">💰</div>
-        <h4>Earning Payouts</h4>
-        <p>Earnings on the same date every month. No fluctuations, ever.</p>
-      </div>
       <div class="benefit-card">
         <div class="benefit-icon">🏷️</div>
         <h4>10% Cashback on Orders</h4>
@@ -821,33 +1172,14 @@
         <p>Get 3% of your asset purchase cost in wallet credits — instantly, 100% redeemable on rentals.</p>
       </div>
       <div class="benefit-card">
-        <div class="benefit-icon">✅</div>
-        <h4>Skip Verification</h4>
-        <p>Auto-approved on all rentals. No waiting for order confirmation.</p>
-      </div>
-      <div class="benefit-card new">
-        <span class="new-badge">New</span>
-        <div class="benefit-icon">🏅</div>
-        <h4>Partner Profile Badge</h4>
-        <p>A visible Asset Partner badge on your SharePal profile.</p>
-      </div>
-      <div class="benefit-card new">
-        <span class="new-badge">New</span>
         <div class="benefit-icon">🎟️</div>
         <h4>5% Exclusive Rent Discount</h4>
         <p>Rent any asset on SharePal at 5% less — exclusive to partners.</p>
       </div>
-      <div class="benefit-card new">
-        <span class="new-badge">New</span>
-        <div class="benefit-icon">🎁</div>
-        <h4>Exclusive Coupons</h4>
-        <p>Partner-only coupon codes unavailable to regular users.</p>
-      </div>
-      <div class="benefit-card new">
-        <span class="new-badge">New</span>
-        <div class="benefit-icon">🚀</div>
-        <h4>Priority Delivery Slots</h4>
-        <p>Free priority booking for delivery. Skip the queue, every time.</p>
+      <div class="benefit-card">
+        <div class="benefit-icon">🎧</div>
+        <h4>Priority Customer Support</h4>
+        <p>Get dedicated priority support — your queries jump the queue, every time.</p>
       </div>
     </div>
   </div>
@@ -857,8 +1189,31 @@
 <section class="section section-alt">
   <div class="container">
     <div class="section-badge">Payout Assurance</div>
-    <h2 class="section-title">Your Payout Is Always.</h2>
-    <p class="section-sub">This is the most important thing to understand about SharePal.</p>
+    <h2 class="section-title">Your Payout Is Always Secured.</h2>
+    <p class="section-sub">This is the most important thing to understand about SharePal — your earnings are always protected, regardless of what happens with the asset.</p>
+
+    <!-- TRACK RECORD STATS STRIP -->
+    <div class="payout-track-record">
+      <div class="track-stat">
+        <div class="track-num">100%</div>
+        <div class="track-label">On-time payout rate<br>across all partners, ever</div>
+      </div>
+      <div class="track-divider"></div>
+      <div class="track-stat">
+        <div class="track-num">3,000+</div>
+        <div class="track-label">Partners paid without<br>a single missed cycle</div>
+      </div>
+      <div class="track-divider"></div>
+      <div class="track-stat">
+        <div class="track-num">₹0</div>
+        <div class="track-label">Payout delayed due to<br>asset damage or loss</div>
+      </div>
+      <div class="track-divider"></div>
+      <div class="track-stat">
+        <div class="track-num">36 mo</div>
+        <div class="track-label">Longest active tenure<br>— paid on time, every time</div>
+      </div>
+    </div>
 
     <div class="payout-banner">
       <h3>Not linked to any single asset's rentals</h3>
@@ -913,7 +1268,7 @@
           </div>
           <div class="dashboard-item-text">
             <strong>Monthly Payout</strong>
-            <span>Fixed payout amount + next payout date</span>
+            <span>Secured payout amount + next payout date</span>
           </div>
         </div>
         <div class="dashboard-item">
@@ -988,6 +1343,83 @@
   </div>
 </section>
 
+<!-- ── WHY BECOME AN ASSET PARTNER ── -->
+<section class="section why-section">
+  <div class="container">
+    <div class="section-badge">Why Become One?</div>
+    <h2 class="section-title">Why Become an Asset Partner?</h2>
+    <p class="section-sub">It's not just about earnings. It's about the access, the status, and the difference you make.</p>
+
+    <div class="why-grid">
+
+      <!-- WHAT YOU GET -->
+      <div class="why-card why-get">
+        <div class="why-card-header">
+          <div class="why-card-icon">✦</div>
+          <div>
+            <div class="why-card-eyebrow">What You Get</div>
+            <h3>Your Money Works.<br>You Don't Have To.</h3>
+          </div>
+        </div>
+        <ul class="why-list">
+          <li><span class="why-check">✓</span> Secured earning payout directly to your bank</li>
+          <li><span class="why-check">✓</span> Full asset purchase cost returned at tenure end</li>
+          <li><span class="why-check">✓</span> 3% of asset cost as instant wallet credits</li>
+          <li><span class="why-check">✓</span> 10% cashback on every SharePal rental you place</li>
+          <li><span class="why-check">✓</span> 5% cheaper rentals — exclusively for Asset Partners</li>
+          <li><span class="why-check">✓</span> Zero effort — SharePal handles everything</li>
+          <li><span class="why-check">✓</span> Priority customer support — jump the queue</li>
+        </ul>
+      </div>
+
+      <!-- WHAT YOU LOSE -->
+      <div class="why-card why-lose">
+        <div class="why-card-header">
+          <div class="why-card-icon why-card-icon-red">✗</div>
+          <div>
+            <div class="why-card-eyebrow why-eyebrow-red">What You Miss Without It</div>
+            <h3>Regular Users Pay More.<br>Partners Pay Less.</h3>
+          </div>
+        </div>
+        <ul class="why-list">
+          <li><span class="why-cross">✗</span> No passive monthly income from your money</li>
+          <li><span class="why-cross">✗</span> Full rental price — no 5% discount, ever</li>
+          <li><span class="why-cross">✗</span> No cashback on any orders placed</li>
+          <li><span class="why-cross">✗</span> No wallet credits to offset rental costs</li>
+          <li><span class="why-cross">✗</span> Money sits idle — no return on it</li>
+          <li><span class="why-cross">✗</span> Standard support queue — no priority access</li>
+          <li><span class="why-cross">✗</span> Same experience as every other user</li>
+        </ul>
+      </div>
+
+    </div><!-- end why-grid -->
+  </div>
+</section>
+
+<!-- ── SUSTAINABILITY BANNER ── -->
+<section class="sustainability-banner">
+  <div class="container">
+    <div class="sustain-inner">
+      <div class="sustain-icon">🌱</div>
+      <div class="sustain-text">
+        <strong>Renting is the most sustainable choice.</strong>
+        Every rented asset is one less product manufactured, shipped, and discarded. By backing the rental economy, you help reduce e-waste, lower carbon emissions, and extend the useful life of high-value equipment — for a planet that benefits too.
+      </div>
+      <div class="sustain-stats">
+        <div class="sustain-stat">
+          <span class="sustain-num">~70%</span>
+          <span class="sustain-label">Lower carbon footprint<br>vs. buying new</span>
+        </div>
+        <div class="sustain-divider"></div>
+        <div class="sustain-stat">
+          <span class="sustain-num">0</span>
+          <span class="sustain-label">Extra products made<br>per rental</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── FAQ ── -->
 <section class="section section-alt" id="faq">
   <div class="container">
@@ -998,11 +1430,11 @@
     <div class="faq-list">
       <div class="faq-item">
         <div class="faq-q"><span class="faq-q-badge">Q</span>What exactly am I paying for?</div>
-        <div class="faq-a">You are helping SharePal purchase a specific rental asset. In return, SharePal tags that asset to your account, pays you fixed monthly earnings from its business revenue, and returns the asset or its full purchase cost to you at tenure end.</div>
+        <div class="faq-a">You are helping SharePal purchase a specific rental asset. In return, SharePal tags that asset to your account, pays you secured monthly earnings from its business revenue, and returns the full original asset purchase cost to you as cash at tenure end.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q"><span class="faq-q-badge">Q</span>What happens at the end of the tenure?</div>
-        <div class="faq-a">You choose: receive the asset back physically, or receive its full original purchase cost as cash. The decision is entirely yours.</div>
+        <div class="faq-a">At the end of your tenure, you receive the full original asset purchase cost back — directly to your bank account.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q"><span class="faq-q-badge">Q</span>When exactly will I receive my payouts?</div>
@@ -1062,7 +1494,7 @@
   <div class="container">
     <h2>Ready to Start Earning?</h2>
     <p>Join thousands of Asset Partners helping SharePal grow its rental fleet — and earning guaranteed monthly payouts in return.</p>
-    <p class="cta-trust">Fixed payouts · Zero operations · Full transparency · Asset-backed security</p>
+    <p class="cta-trust">Secured payouts · Zero operations · Full transparency · Asset-backed security</p>
     <button class="cta-btn">→ Browse Assets &amp; Calculate Your Earnings</button>
   </div>
 </section>
