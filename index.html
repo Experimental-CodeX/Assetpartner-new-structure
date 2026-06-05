@@ -131,11 +131,47 @@
     grid-template-columns: 1fr 380px;
     gap: 56px;
     align-items: center;
-    padding: 80px 0 72px;
+    padding: 40px 0 32px;
   }
 
   .hero-left { display: flex; flex-direction: column; }
-  .hero-right { display: flex; align-items: flex-start; justify-content: flex-end; }
+  .hero-right { display: flex; flex-direction: column; gap: 12px; justify-content: center; }
+
+  /* EARNING CARD */
+  .hero-earning-card {
+    background: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(22,163,74,0.08));
+    border: 1px solid rgba(134,239,172,0.3);
+    border-radius: 14px; padding: 18px 20px;
+  }
+  .hero-earning-eyebrow {
+    font-size: 11px; font-weight: 700; color: #86EFAC;
+    letter-spacing: 0.5px; margin-bottom: 8px;
+  }
+  .hero-earning-num {
+    font-family: 'Sora', sans-serif; font-size: 36px; font-weight: 800;
+    color: #fff; line-height: 1; margin-bottom: 4px;
+  }
+  .hero-earning-num span { font-size: 16px; color: rgba(255,255,255,0.55); font-weight: 500; }
+  .hero-earning-asset {
+    font-size: 11px; color: rgba(255,255,255,0.4);
+    margin-bottom: 14px;
+  }
+  .hero-earning-row {
+    display: flex; align-items: center; gap: 0;
+    background: rgba(255,255,255,0.06); border-radius: 8px;
+    padding: 10px 14px; margin-bottom: 12px;
+  }
+  .hero-earning-stat { flex: 1; text-align: center; }
+  .hero-earning-stat-num {
+    font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 800;
+    color: #86EFAC; line-height: 1; margin-bottom: 2px;
+  }
+  .hero-earning-stat-label { font-size: 10px; color: rgba(255,255,255,0.4); }
+  .hero-earning-divider { width: 1px; height: 28px; background: rgba(255,255,255,0.12); margin: 0 8px; }
+  .hero-earning-note {
+    font-size: 11px; color: rgba(255,255,255,0.35);
+    text-align: center;
+  }
 
   .hero-rule {
     width: 56px; height: 2px;
@@ -165,7 +201,7 @@
     max-width: 520px; margin-bottom: 36px;
   }
 
-  .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 56px; }
+  .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 24px; }
 
   .btn-primary {
     display: inline-flex; align-items: center; gap: 8px;
@@ -271,32 +307,45 @@
   /* ── WHAT IS — BENEFITS STRIP ── */
   .what-benefits {
     display: flex; align-items: center;
-    background: var(--navy); border-radius: 16px;
-    padding: 20px 28px; margin-bottom: 20px;
-    overflow-x: auto; gap: 0;
-    scrollbar-width: none;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: 18px 28px;
+    margin-top: 8px; margin-bottom: 32px;
+    justify-content: space-between;
   }
-  .what-benefits::-webkit-scrollbar { display: none; }
 
   .what-benefit-item {
     display: flex; align-items: center; gap: 10px;
-    padding: 4px 18px; flex-shrink: 0; min-width: 160px;
+    flex: 1; padding: 0 12px;
   }
 
-  .what-benefit-more { opacity: 0.7; }
+  .what-benefit-more { opacity: 0.5; }
 
-  .what-benefit-icon { font-size: 22px; flex-shrink: 0; }
+  .what-benefit-icon { font-size: 20px; flex-shrink: 0; }
 
   .what-benefit-item strong {
     display: block; font-family: 'Sora', sans-serif;
-    font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 2px; white-space: nowrap;
+    font-size: 12px; font-weight: 700; color: #fff;
+    margin-bottom: 2px; white-space: nowrap;
   }
 
-  .what-benefit-item span { font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.4; display: block; white-space: nowrap; }
+  .what-benefit-item span {
+    font-size: 11px; color: rgba(255,255,255,0.5);
+    line-height: 1.4; display: block; white-space: nowrap;
+  }
 
-  .what-benefit-divider { width: 1px; min-width: 1px; height: 40px; background: rgba(255,255,255,0.1); flex-shrink: 0; }
+  .what-benefit-divider {
+    width: 1px; height: 36px;
+    background: rgba(255,255,255,0.15); flex-shrink: 0;
+  }
 
-  /* ── DAMAGE COVERAGE BOX ── */
+  @media (max-width: 900px) {
+    .what-benefits { flex-wrap: wrap; gap: 14px; padding: 16px 20px; border-radius: 12px; }
+    .what-benefit-divider { display: none; }
+    .what-benefit-item { flex: none; padding: 0; }
+  }
+
   .damage-box {
     display: flex; align-items: flex-start; gap: 20px;
     background: #F0FDF4; border: 1.5px solid #86EFAC;
@@ -319,9 +368,6 @@
   .damage-box-text p { font-size: 13px; color: var(--muted); line-height: 1.7; }
 
   @media (max-width: 900px) {
-    .what-benefits { grid-template-columns: 1fr; gap: 16px; padding: 24px; }
-    .what-benefit-divider { display: none; }
-    .what-benefit-item { padding: 0; }
     .damage-box { flex-direction: column; }
   }
 
@@ -393,6 +439,28 @@
   .tenure-box p { font-size: 13px; color: var(--muted); }
 
   .tenure-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .tenure-tag {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px; padding: 6px 14px;
+    font-family: 'Sora', sans-serif; font-size: 13px;
+    font-weight: 600; color: var(--muted);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .tenure-tag::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--blue); flex-shrink: 0;
+  }
+    font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--blue);
+    margin-bottom: 8px;
+  }
+
+  .tenure-hint {
+    font-size: 11px; color: var(--muted);
+    margin-top: 8px; font-style: italic;
+  }
 
   .pill {
     background: #fff; border: 1.5px solid var(--border);
@@ -966,14 +1034,35 @@
         </div>
       </div>
 
-      <!-- RIGHT: STATUS CARD -->
+      <!-- RIGHT: TWO STACKED CARDS -->
       <div class="hero-right">
+
+        <!-- CARD 1: EARNING PAYOUT -->
+        <div class="hero-earning-card">
+          <div class="hero-earning-eyebrow">💰 Monthly Earning Payout</div>
+          <div class="hero-earning-num">₹1,681<span>/mo</span></div>
+          <div class="hero-earning-asset">DJI Mini 5 Pro · Asset purchase price ₹1,34,500</div>
+          <div class="hero-earning-row">
+            <div class="hero-earning-stat">
+              <div class="hero-earning-stat-num">₹20,172</div>
+              <div class="hero-earning-stat-label">Total over 12 months</div>
+            </div>
+            <div class="hero-earning-divider"></div>
+            <div class="hero-earning-stat">
+              <div class="hero-earning-stat-num">₹4,035</div>
+              <div class="hero-earning-stat-label">Instant wallet credit</div>
+            </div>
+          </div>
+          <div class="hero-earning-note">Paid directly to your bank · Same date every month</div>
+        </div>
+
+        <!-- CARD 2: VS COMPARISON -->
         <div class="hero-status-card">
           <div class="hero-status-header">
             <span class="hero-status-crown">♛</span>
             <div>
               <div class="hero-status-eyebrow">Exclusive Perks</div>
-              <div class="hero-status-title">Asset Partner vs. Regular User</div>
+              <div class="hero-status-title">Asset Partner VS Regular User</div>
             </div>
           </div>
           <div class="hero-status-table">
@@ -1014,13 +1103,48 @@
             </div>
           </div>
         </div>
+
       </div>
 
     </div>
+
+    <!-- PERKS STRIP -->
+    <div class="what-benefits">
+      <div class="what-benefit-item">
+        <div class="what-benefit-icon">👛</div>
+        <div>
+          <strong>3% Instant Wallet Credit</strong>
+          <span>100% redeemable on SharePal rentals</span>
+        </div>
+      </div>
+      <div class="what-benefit-divider"></div>
+      <div class="what-benefit-item">
+        <div class="what-benefit-icon">🏷️</div>
+        <div>
+          <strong>10% Cashback on Orders</strong>
+          <span>On every rental you place on SharePal</span>
+        </div>
+      </div>
+      <div class="what-benefit-divider"></div>
+      <div class="what-benefit-item">
+        <div class="what-benefit-icon">🎟️</div>
+        <div>
+          <strong>10% Exclusive Rent Discount</strong>
+          <span>Cheaper rentals, only for partners</span>
+        </div>
+      </div>
+      <div class="what-benefit-divider"></div>
+      <div class="what-benefit-item">
+        <div class="what-benefit-icon">🎧</div>
+        <div>
+          <strong>Priority Customer Support</strong>
+          <span>Jump the queue, faster resolutions</span>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
-
-<!-- ── WHAT IS SHAREPAL ── -->
 <section class="section">
   <div class="container">
     <div class="section-badge">What is this?</div>
@@ -1068,58 +1192,19 @@
       </div>
     </div>
 
-    <!-- BENEFITS HIGHLIGHT STRIP -->
-    <div class="what-benefits">
-      <div class="what-benefit-item">
-        <div class="what-benefit-icon">👛</div>
-        <div>
-          <strong>3% Instant Wallet Credit</strong>
-          <span>100% redeemable on SharePal rentals</span>
-        </div>
-      </div>
-      <div class="what-benefit-divider"></div>
-      <div class="what-benefit-item">
-        <div class="what-benefit-icon">🏷️</div>
-        <div>
-          <strong>10% Cashback on Orders</strong>
-          <span>On every rental you place on SharePal</span>
-        </div>
-      </div>
-      <div class="what-benefit-divider"></div>
-      <div class="what-benefit-item">
-        <div class="what-benefit-icon">🎟️</div>
-        <div>
-          <strong>10% Exclusive Rent Discount</strong>
-          <span>Cheaper rentals, only for partners</span>
-        </div>
-      </div>
-      <div class="what-benefit-divider"></div>
-      <div class="what-benefit-item">
-        <div class="what-benefit-icon">🎧</div>
-        <div>
-          <strong>Priority Customer Support</strong>
-          <span>Jump the queue, faster resolutions</span>
-        </div>
-      </div>
-      <div class="what-benefit-divider"></div>
-      <div class="what-benefit-item what-benefit-more">
-        <div class="what-benefit-icon">✨</div>
-        <div>
-          <strong>And More</strong>
-          <span>Profile Badge &amp; Exclusive Pricing</span>
-        </div>
-      </div>
-    </div>
-
     <div class="tenure-box">
       <div>
         <h4>At the End of Your Tenure</h4>
         <p>Receive the original asset purchase price back — directly to your bank account.</p>
       </div>
-      <div class="tenure-pills">
-        <div class="pill active">12 Months</div>
-        <div class="pill">24 Months</div>
-        <div class="pill">36 Months</div>
+      <div>
+        <div class="tenure-label">Available Tenures</div>
+        <div class="tenure-pills">
+          <div class="tenure-tag">12 Months</div>
+          <div class="tenure-tag">24 Months</div>
+          <div class="tenure-tag">36 Months</div>
+        </div>
+        <div class="tenure-hint">Pick your tenure when you browse assets</div>
       </div>
     </div>
   </div>
