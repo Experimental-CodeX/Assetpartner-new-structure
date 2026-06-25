@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SharePal — Payout Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#1B4FD8;--blue-d:#1035a8;--blue-l:#EEF3FF;--blue-m:#2563EB;
+  --green:#16A34A;--green-l:#DCFCE7;
+  --teal:#0D9488;--teal-l:#CCFBF1;--teal-border:#99F6E4;
+  --gray-900:#0F1623;--gray-800:#1E2433;--gray-600:#5A6278;
+  --gray-400:#9BA3B5;--gray-200:#E4E7EF;--gray-100:#F1F3F7;--gray-50:#F8F9FB;
+  --white:#fff;
+  --font-display:'Ubuntu',sans-serif;--font-body:'Inter',sans-serif;
+  --radius-sm:8px;--radius-md:14px;--radius-lg:20px;--radius-xl:28px;
+  --shadow-sm:0 1px 4px rgba(0,0,0,.06);
+  --shadow-md:0 6px 24px rgba(0,0,0,.09);
+  --shadow-lg:0 16px 48px rgba(0,0,0,.13);
+  --shadow-blue:0 8px 32px rgba(27,79,216,.28);
+  --shadow-teal:0 8px 32px rgba(13,148,136,.28);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--gray-50);color:var(--gray-800);min-height:100vh;line-height:1.6;overflow-x:hidden}
+
+/* NAV */
+nav{background:var(--white);border-bottom:1px solid var(--gray-200);position:sticky;top:0;z-index:200;box-shadow:var(--shadow-sm)}
+.nav-inner{max-width:1080px;margin:0 auto;padding:0 1.5rem;height:62px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{width:36px;height:36px;background:var(--blue);border-radius:10px;display:flex;align-items:center;justify-content:center}
+.logo-mark svg{width:18px;height:18px;fill:white}
+.logo-name{font-family:var(--font-display);font-size:19px;font-weight:800;color:var(--blue);letter-spacing:-0.5px}
+.logo-name span{color:var(--green)}
+.nav-links{display:flex;align-items:center;gap:1.75rem}
+.nav-links a{font-size:13px;font-weight:500;color:var(--gray-600);text-decoration:none;transition:color .15s}
+.nav-links a:hover{color:var(--blue)}
+.nav-btn{background:var(--blue);color:white!important;padding:7px 18px;border-radius:8px;font-size:13px;font-weight:600;transition:background .15s,transform .15s}
+.nav-btn:hover{background:var(--blue-d)!important;transform:translateY(-1px)}
+
+/* HERO */
+.hero{position:relative;overflow:hidden;padding:4.5rem 1.5rem 3.5rem;text-align:center;
+  background:linear-gradient(160deg,#0a1f6e 0%,#1B4FD8 45%,#2563EB 75%,#3b82f6 100%)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.hero-glow{position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(255,255,255,.12) 0%,transparent 70%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:100px;padding:6px 16px;font-size:12px;font-weight:600;color:white;margin-bottom:1.25rem;position:relative;letter-spacing:.3px}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:#6EF0A4;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.7;transform:scale(1.3)}}
+.hero h1{font-family:var(--font-display);font-size:clamp(2rem,5vw,3rem);font-weight:800;line-height:1.15;letter-spacing:-1.5px;color:white;margin-bottom:.9rem;position:relative}
+.hero h1 em{font-style:normal;color:#93C5FD}
+.hero p{font-size:1rem;color:rgba(255,255,255,.72);max-width:540px;margin:0 auto 2.5rem;position:relative}
+.hero-stats{display:flex;justify-content:center;gap:3rem;position:relative}
+.stat-val{font-family:var(--font-display);font-size:1.55rem;font-weight:800;color:white;line-height:1}
+.stat-lbl{font-size:11px;color:rgba(255,255,255,.55);margin-top:3px;font-weight:500;letter-spacing:.3px}
+
+/* MAIN */
+.main{max-width:1100px;margin:-2rem auto 0;padding:0 1.25rem 5rem;position:relative;z-index:10}
+
+/* TOGGLE — 3 buttons */
+.toggle-wrap{display:flex;justify-content:center;margin-bottom:1.75rem}
+.toggle-pill{display:flex;background:var(--white);border:1.5px solid var(--gray-200);border-radius:100px;padding:4px;box-shadow:var(--shadow-md);gap:4px}
+.toggle-btn{font-family:var(--font-display);font-size:12.5px;font-weight:700;padding:10px 22px;border-radius:100px;border:none;cursor:pointer;background:transparent;transition:all .25s;display:flex;align-items:center;gap:6px;letter-spacing:.2px;color:var(--gray-600)}
+.toggle-btn svg{width:14px;height:14px;transition:all .25s;stroke:var(--gray-400);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.toggle-btn.active-ls{background:var(--blue);color:white;box-shadow:var(--shadow-blue)}
+.toggle-btn.active-ls svg{stroke:white}
+.toggle-btn.active-mp{background:var(--blue-m);color:white;box-shadow:var(--shadow-blue)}
+.toggle-btn.active-mp svg{stroke:white}
+.toggle-btn.active-emi{background:var(--teal);color:white;box-shadow:var(--shadow-teal)}
+.toggle-btn.active-emi svg{stroke:white}
+
+/* TENURE FIXED */
+.tenure-fixed{background:var(--blue-l);border:2px solid #C7D8FF;border-radius:var(--radius-md);padding:16px;text-align:center}
+.tenure-fixed-val{font-family:var(--font-display);font-size:34px;font-weight:800;color:var(--blue);line-height:1}
+.tenure-fixed-lbl{font-size:11px;color:var(--gray-600);font-weight:600;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+.tenure-fixed-rate{font-size:12px;color:var(--green);font-weight:700;margin-top:7px;background:var(--green-l);display:inline-block;padding:3px 11px;border-radius:20px}
+
+/* CARD */
+.card{background:var(--white);border-radius:var(--radius-xl);box-shadow:var(--shadow-lg);border:1px solid var(--gray-200);overflow:hidden}
+.card-pad{padding:1.75rem 2rem}
+.card+.card{margin-top:1.25rem}
+
+/* GRID */
+.calc-grid{display:grid;grid-template-columns:1fr 1.1fr 1fr;gap:1.25rem;align-items:start}
+
+/* SECTION LABEL */
+.sec-label{font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:.75rem}
+
+/* AMOUNT INPUT */
+.amt-box{display:flex;align-items:center;gap:6px;background:var(--gray-50);border:2px solid var(--gray-200);border-radius:var(--radius-md);padding:12px 16px;transition:all .2s}
+.amt-box:focus-within{border-color:var(--blue);background:var(--blue-l)}
+.amt-box.teal:focus-within{border-color:var(--teal);background:var(--teal-l)}
+.rupee{font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--blue)}
+.rupee.teal{color:var(--teal)}
+input.amt{border:none;background:transparent;font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--gray-800);flex:1;outline:none;width:100%}
+input.amt::placeholder{color:var(--gray-400);font-weight:500;font-size:18px;font-family:var(--font-body)}
+.quick-row{display:flex;gap:5px;margin-top:9px;flex-wrap:wrap}
+.qbtn{font-size:11px;font-weight:600;padding:4px 11px;border-radius:100px;border:1.5px solid var(--blue);color:var(--blue);background:transparent;cursor:pointer;transition:all .15s;font-family:var(--font-body)}
+.qbtn:hover{background:var(--blue);color:white}
+.qbtn.t{border-color:var(--teal);color:var(--teal)}
+.qbtn.t:hover{background:var(--teal);color:white}
+
+/* RESULT CARDS */
+.result-blue{background:linear-gradient(145deg,#1B4FD8,#2563EB);border-radius:var(--radius-xl);padding:2rem;color:white;position:relative;overflow:hidden;box-shadow:var(--shadow-blue)}
+.result-teal{background:linear-gradient(145deg,#0D9488,#0F766E);border-radius:var(--radius-xl);padding:2rem;color:white;position:relative;overflow:hidden;box-shadow:var(--shadow-teal)}
+.result-blue::after,.result-teal::after{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.06);pointer-events:none}
+.r-label{font-size:10px;font-weight:700;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;position:relative}
+.r-value{font-family:var(--font-display);font-size:2.8rem;font-weight:800;letter-spacing:-2px;line-height:1;position:relative}
+.r-gain{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.12);border-radius:100px;padding:4px 12px;font-size:12px;font-weight:700;color:#6EF0A4;margin-top:9px;position:relative}
+.r-note{margin-top:12px;padding:11px 13px;background:rgba(255,255,255,.1);border-radius:var(--radius-md);display:flex;align-items:center;gap:9px;position:relative}
+.r-note-icon{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.r-note-icon svg{width:14px;height:14px;stroke:white;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.r-note-text{font-size:11.5px;color:rgba(255,255,255,.8);font-weight:500;line-height:1.4}
+.r-note-text strong{color:white;display:block;font-size:12.5px;font-weight:700;margin-bottom:1px}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:13px;position:relative}
+.mbox{background:rgba(255,255,255,.1);border-radius:var(--radius-sm);padding:11px;text-align:center}
+.mbox-val{font-family:var(--font-display);font-size:14px;font-weight:800;color:white}
+.mbox-lbl{font-size:9px;color:rgba(255,255,255,.5);margin-top:2px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+
+/* SCHEDULE */
+.sch-hdr{padding:12px 16px;border-bottom:1px solid var(--gray-200);display:flex;justify-content:space-between;align-items:center;background:var(--gray-50)}
+.sch-title{font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--gray-800)}
+.sch-pill{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.3px}
+.sch-pill-blue{background:var(--blue-l);color:var(--blue)}
+.sch-pill-teal{background:var(--teal-l);color:var(--teal)}
+.sch-body{max-height:340px;overflow-y:auto}
+.sch-body::-webkit-scrollbar{width:4px}
+.sch-body::-webkit-scrollbar-track{background:var(--gray-100)}
+.sch-body::-webkit-scrollbar-thumb{background:#ccc;border-radius:4px}
+.sch-row{display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid var(--gray-100);transition:background .12s}
+.sch-row:last-child{border-bottom:none}
+.sch-row:hover{background:var(--gray-50)}
+.sch-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;margin-right:11px;flex-shrink:0}
+.sch-num-blue{background:var(--blue-l);color:var(--blue)}
+.sch-num-teal{background:var(--teal-l);color:var(--teal)}
+.sch-info{flex:1}
+.sch-name{font-size:12px;font-weight:600;color:var(--gray-800)}
+.sch-sub{font-size:10px;color:var(--gray-400);margin-top:1px;font-weight:500}
+.sch-amt{font-family:var(--font-display);font-size:13px;font-weight:800;color:var(--green);text-align:right;min-width:80px}
+/* EMI schedule has extra columns */
+.sch-row-emi{display:grid;grid-template-columns:26px 1fr auto;align-items:center;padding:9px 16px;border-bottom:1px solid var(--gray-100);gap:10px;transition:background .12s}
+.sch-row-emi:last-child{border-bottom:none}
+.sch-row-emi:hover{background:var(--gray-50)}
+.emi-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;text-align:right}
+.emi-col-lbl{font-size:9px;color:var(--gray-400);font-weight:600;text-transform:uppercase}
+.emi-col-val{font-family:var(--font-display);font-size:12px;font-weight:700}
+.emi-col-val.int{color:var(--blue)}
+.emi-col-val.pri{color:var(--teal)}
+.emi-col-val.emi{color:var(--green)}
+.sch-row-final-blue{background:var(--blue-l)}
+.sch-row-final-blue .sch-num-blue{background:var(--blue);color:white}
+.sch-row-final-teal{background:var(--teal-l)}
+.sch-row-final-teal .sch-num-teal{background:var(--teal);color:white}
+.final-tag{font-size:9px;font-weight:800;padding:2px 6px;border-radius:20px;margin-left:5px;vertical-align:middle}
+.final-tag-blue{background:var(--blue);color:white}
+.final-tag-teal{background:var(--teal);color:white}
+
+/* SUMMARY CARD */
+.summary-card{padding:1.5rem 1.75rem}
+.smc-row{display:flex;align-items:flex-start;justify-content:space-between;padding:9px 0}
+.smc-label{font-size:13.5px;color:var(--gray-600);font-weight:500;padding-top:4px}
+.smc-right{text-align:right}
+.smc-value{font-family:'Ubuntu',sans-serif;font-size:21px;font-weight:700;color:var(--gray-800);letter-spacing:-0.5px}
+.smc-sub{font-size:11px;color:var(--gray-400);margin-top:2px;font-weight:500}
+.smc-payout{color:var(--green)!important}
+.smc-gain{font-size:12px;font-weight:600;color:var(--gray-600);margin-top:2px}
+.smc-divider{border:none;border-top:1px dashed var(--gray-200);margin:4px 0;position:relative;text-align:center}
+.smc-divider::after{content:attr(data-tenure);position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--white);padding:0 10px;font-size:11px;font-weight:700;color:var(--blue);white-space:nowrap}
+.smc-period-box{display:flex;align-items:center;justify-content:space-between;border-radius:var(--radius-md);padding:12px 15px;margin-top:10px}
+.smc-period-box-blue{background:var(--blue-l)}
+.smc-period-box-teal{background:var(--teal-l)}
+.smc-period-lbl{font-size:13px;font-weight:600;color:var(--gray-800)}
+.smc-period-val{font-family:'Ubuntu',sans-serif;font-size:15px;font-weight:700;letter-spacing:-0.3px}
+.smc-period-val-blue{color:var(--blue)}
+.smc-period-val-teal{color:var(--teal)}
+
+/* WHY */
+.why{background:var(--white);padding:5rem 1.5rem;border-top:1px solid var(--gray-200)}
+.section-wrap{max-width:960px;margin:0 auto}
+.eyebrow{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;color:var(--blue)}
+.sec-h{font-family:var(--font-display);font-size:clamp(1.6rem,3vw,2.1rem);font-weight:800;letter-spacing:-0.5px;color:var(--gray-800);margin-bottom:.5rem}
+.sec-p{font-size:.95rem;color:var(--gray-600);max-width:480px}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin-top:2.25rem}
+.feat{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:1.4rem;transition:box-shadow .2s,transform .2s}
+.feat:hover{box-shadow:var(--shadow-md);transform:translateY(-3px)}
+.feat-ic{width:42px;height:42px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;margin-bottom:.9rem}
+.feat-ic svg{width:20px;height:20px;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.feat-t{font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--gray-800);margin-bottom:5px}
+.feat-d{font-size:12.5px;color:var(--gray-600);line-height:1.6}
+
+/* CTA */
+.cta{background:linear-gradient(135deg,#0a1f6e,#1B4FD8);padding:5rem 1.5rem;text-align:center;color:white}
+.cta h2{font-family:var(--font-display);font-size:1.9rem;font-weight:800;letter-spacing:-0.5px;margin-bottom:.7rem}
+.cta p{font-size:.95rem;color:rgba(255,255,255,.65);margin-bottom:2rem}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:white;color:var(--blue);padding:13px 30px;border-radius:var(--radius-md);font-family:var(--font-display);font-size:14px;font-weight:700;text-decoration:none;box-shadow:0 4px 20px rgba(0,0,0,.2);transition:transform .15s,box-shadow .15s}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.25)}
+
+/* FOOTER */
+footer{background:var(--gray-800);color:rgba(255,255,255,.45);padding:1.75rem 1.5rem;text-align:center;font-size:12px}
+footer strong{color:rgba(255,255,255,.75)}
+.disclaimer{font-size:10.5px;color:var(--gray-400);text-align:center;margin-top:1.5rem;line-height:1.8;max-width:700px;margin-left:auto;margin-right:auto}
+
+/* PANELS */
+#panel-lumpsum,#panel-monthly,#panel-emi{display:none}
+#panel-lumpsum.visible,#panel-monthly.visible,#panel-emi.visible{display:block;animation:fadeUp .3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:700px){
+  .calc-grid,.feat-grid{grid-template-columns:1fr}
+  .hero-stats{gap:1.5rem}
+  .nav-links{display:none}
+  .toggle-btn{padding:8px 12px;font-size:11px}
+  .emi-cols{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <div class="logo-mark"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
+      <span class="logo-name">Share<span>Pal</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="#">Home</a><a href="#">Browse Assets</a><a href="#">Dashboard</a>
+      <a href="#" class="nav-btn">Login</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-badge"><div class="badge-dot"></div>Asset-Backed Returns — 24 Month Tenure</div>
+  <h1>Calculate Your<br><em>Earnings</em></h1>
+  <p>Three payout structures — Lump Sum, Monthly Payout, or Reducing Balance EMI. See exactly what you earn.</p>
+  <div class="hero-stats">
+    <div><div class="stat-val">₹15+ Cr</div><div class="stat-lbl">Deployed Assets</div></div>
+    <div><div class="stat-val" id="hero-irr">—</div><div class="stat-lbl">Effective IRR p.a.</div></div>
+    <div><div class="stat-val">3,000+</div><div class="stat-lbl">Active Assets</div></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TOGGLE -->
+  <div class="toggle-wrap">
+    <div class="toggle-pill">
+      <button class="toggle-btn" id="btn-lumpsum" onclick="switchMode('lumpsum')">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Lump Sum
+      </button>
+      <button class="toggle-btn active-mp" id="btn-monthly" onclick="switchMode('monthly')">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Monthly Payout
+      </button>
+      <button class="toggle-btn" id="btn-emi" onclick="switchMode('emi')">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        EMI Payout
+      </button>
+    </div>
+  </div>
+
+  <!-- ══════════ LUMP SUM PANEL ══════════ -->
+  <div id="panel-lumpsum">
+    <div class="calc-grid">
+      <div>
+        <div class="card card-pad">
+          <div class="sec-label">Asset Cost <span style="color:var(--green);font-weight:700;font-size:10px">(Min ₹5,00,000)</span></div>
+          <div class="amt-box">
+            <span class="rupee">₹</span>
+            <input class="amt" id="l-principal" type="number" placeholder="Min ₹5,00,000" value="500000" min="500000" oninput="calcLumpsum()"/>
+          </div>
+          <div id="l-err" style="color:#DC2626;font-size:11px;font-weight:600;margin-top:5px;display:none">⚠ Minimum investment is ₹5,00,000</div>
+          <div class="quick-row">
+            <button class="qbtn" onclick="lSetAmt(500000)">₹5L</button>
+            <button class="qbtn" onclick="lSetAmt(1000000)">₹10L</button>
+            <button class="qbtn" onclick="lSetAmt(2500000)">₹25L</button>
+            <button class="qbtn" onclick="lSetAmt(5000000)">₹50L</button>
+            <button class="qbtn" onclick="lSetAmt(10000000)">₹1Cr</button>
+          </div>
+        </div>
+        <div class="card card-pad">
+          <div class="sec-label">Tenure</div>
+          <div class="tenure-fixed">
+            <div class="tenure-fixed-val">24</div>
+            <div class="tenure-fixed-lbl">Months / 2 Years</div>
+            <div class="tenure-fixed-rate">IRR: <span id="l-irr-badge">—</span> p.a.</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="sch-hdr">
+            <span class="sch-title">Payout Timeline</span>
+            <span class="sch-pill sch-pill-blue">24 Months</span>
+          </div>
+          <div class="sch-body" id="l-schedule"></div>
+        </div>
+      </div>
+      <div>
+        <div class="card summary-card" style="margin-bottom:1.25rem">
+          <div class="smc-row">
+            <span class="smc-label">Total Asset Cost</span>
+            <div class="smc-right">
+              <div class="smc-value" id="l-bd-p">₹0</div>
+              <div class="smc-sub">Tenure: 24 Months</div>
+            </div>
+          </div>
+          <div class="smc-divider" data-tenure="Tenure: 24 Months"></div>
+          <div class="smc-row">
+            <span class="smc-label">Total Payout</span>
+            <div class="smc-right">
+              <div class="smc-value smc-payout" id="l-bd-total">₹0</div>
+              <div class="smc-gain" id="l-bd-gain">Total Gain: +₹0</div>
+            </div>
+          </div>
+          <div class="smc-period-box smc-period-box-blue">
+            <span class="smc-period-lbl">Lump Sum at Maturity</span>
+            <span class="smc-period-val smc-period-val-blue" id="l-bd-period">₹0</span>
+          </div>
+        </div>
+        <div class="result-blue">
+          <div class="r-label">You Receive at Maturity</div>
+          <div class="r-value" id="l-total">₹0</div>
+          <div class="r-gain" id="l-gain">+₹0 total earning</div>
+          <div class="r-note">
+            <div class="r-note-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+            <div class="r-note-text"><strong>Paid after 24 months</strong>Single lump sum — asset cost + all earning paid together at end</div>
+          </div>
+          <div class="metrics">
+            <div class="mbox"><div class="mbox-val" id="l-m1">₹0</div><div class="mbox-lbl">Asset Cost</div></div>
+            <div class="mbox"><div class="mbox-val" id="l-m2">₹0</div><div class="mbox-lbl">Total Earning</div></div>
+            <div class="mbox"><div class="mbox-val" id="l-m3">0%</div><div class="mbox-lbl">IRR p.a.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="disclaimer">* Monthly compounded earning — locked for 24 months. No payouts during tenure. Everything paid in one lump sum at end of 24 months.<br>Monthly compounding at 1.3888%/month. Indicative figures only.</div>
+  </div>
+
+  <!-- ══════════ MONTHLY PAYOUT PANEL ══════════ -->
+  <div id="panel-monthly" class="visible">
+    <div class="calc-grid">
+      <div>
+        <div class="card card-pad">
+          <div class="sec-label">Asset Cost <span style="color:var(--green);font-weight:700;font-size:10px">(Min ₹5,00,000)</span></div>
+          <div class="amt-box">
+            <span class="rupee">₹</span>
+            <input class="amt" id="m-principal" type="number" placeholder="Min ₹5,00,000" value="500000" min="500000" oninput="calcMonthly()"/>
+          </div>
+          <div id="m-err" style="color:#DC2626;font-size:11px;font-weight:600;margin-top:5px;display:none">⚠ Minimum investment is ₹5,00,000</div>
+          <div class="quick-row">
+            <button class="qbtn" onclick="mSetAmt(500000)">₹5L</button>
+            <button class="qbtn" onclick="mSetAmt(1000000)">₹10L</button>
+            <button class="qbtn" onclick="mSetAmt(2500000)">₹25L</button>
+            <button class="qbtn" onclick="mSetAmt(5000000)">₹50L</button>
+            <button class="qbtn" onclick="mSetAmt(10000000)">₹1Cr</button>
+          </div>
+        </div>
+        <div class="card card-pad">
+          <div class="sec-label">Tenure</div>
+          <div class="tenure-fixed">
+            <div class="tenure-fixed-val">24</div>
+            <div class="tenure-fixed-lbl">Months / 2 Years</div>
+            <div class="tenure-fixed-rate">IRR: <span id="m-irr-badge">—</span> p.a.</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="sch-hdr">
+            <span class="sch-title">Monthly Payout Schedule</span>
+            <span class="sch-pill sch-pill-blue">24 Months</span>
+          </div>
+          <div class="sch-body" id="m-schedule"></div>
+        </div>
+      </div>
+      <div>
+        <div class="card summary-card" style="margin-bottom:1.25rem">
+          <div class="smc-row">
+            <span class="smc-label">Total Asset Cost</span>
+            <div class="smc-right">
+              <div class="smc-value" id="m-bd-p">₹0</div>
+              <div class="smc-sub">Tenure: 24 Months</div>
+            </div>
+          </div>
+          <div class="smc-divider" data-tenure="Tenure: 24 Months"></div>
+          <div class="smc-row">
+            <span class="smc-label">Total Payout</span>
+            <div class="smc-right">
+              <div class="smc-value smc-payout" id="m-bd-total">₹0</div>
+              <div class="smc-gain" id="m-bd-gain">Total Gain: +₹0</div>
+            </div>
+          </div>
+          <div class="smc-period-box smc-period-box-blue">
+            <span class="smc-period-lbl">Monthly Interest Payout</span>
+            <span class="smc-period-val smc-period-val-blue" id="m-bd-period">₹0/mo</span>
+          </div>
+        </div>
+        <div class="result-blue">
+          <div class="r-label">Monthly Interest Payout</div>
+          <div class="r-value" id="m-monthly">₹0<span style="font-size:1.1rem;font-weight:600;opacity:.7">/mo</span></div>
+          <div class="r-gain" id="m-gain">+₹0 total earning</div>
+          <div class="r-note">
+            <div class="r-note-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div class="r-note-text"><strong id="m-when">₹0 interest/month for 23 months</strong>Month 24: interest + full principal returned together</div>
+          </div>
+          <div class="metrics">
+            <div class="mbox"><div class="mbox-val" id="m-m1">₹0</div><div class="mbox-lbl">Per Month</div></div>
+            <div class="mbox"><div class="mbox-val" id="m-m2">₹0</div><div class="mbox-lbl">Total Earning</div></div>
+            <div class="mbox"><div class="mbox-val" id="m-m3">0%</div><div class="mbox-lbl">IRR p.a.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="disclaimer">* Interest only paid every month — principal untouched. Month 24: interest + full principal returned together.<br>Rate: 1.3888%/month flat on original asset cost. Indicative figures only.</div>
+  </div>
+
+  <!-- ══════════ EMI PAYOUT PANEL ══════════ -->
+  <div id="panel-emi">
+    <div class="calc-grid">
+      <div>
+        <div class="card card-pad">
+          <div class="sec-label">Asset Cost (Loan Amount) <span style="color:var(--green);font-weight:700;font-size:10px">(Min ₹5,00,000)</span></div>
+          <div class="amt-box teal">
+            <span class="rupee teal">₹</span>
+            <input class="amt" id="e-principal" type="number" placeholder="Min ₹5,00,000" value="500000" min="500000" oninput="calcEMI()"/>
+          </div>
+          <div id="e-err" style="color:#DC2626;font-size:11px;font-weight:600;margin-top:5px;display:none">⚠ Minimum investment is ₹5,00,000</div>
+          <div class="quick-row">
+            <button class="qbtn t" onclick="eSetAmt(500000)">₹5L</button>
+            <button class="qbtn t" onclick="eSetAmt(1000000)">₹10L</button>
+            <button class="qbtn t" onclick="eSetAmt(2500000)">₹25L</button>
+            <button class="qbtn t" onclick="eSetAmt(5000000)">₹50L</button>
+            <button class="qbtn t" onclick="eSetAmt(10000000)">₹1Cr</button>
+          </div>
+        </div>
+        <div class="card card-pad">
+          <div class="sec-label">Tenure</div>
+          <div class="tenure-fixed">
+            <div class="tenure-fixed-val">24</div>
+            <div class="tenure-fixed-lbl">Months / 2 Years</div>
+            <div class="tenure-fixed-rate">IRR: <span id="e-irr-badge">—</span> p.a.</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="sch-hdr">
+            <span class="sch-title">EMI Amortisation Schedule</span>
+            <span class="sch-pill sch-pill-teal">24 Months</span>
+          </div>
+          <!-- EMI schedule header -->
+          <div style="display:grid;grid-template-columns:26px 1fr auto;gap:10px;padding:7px 16px;background:#f8f9fb;border-bottom:1px solid var(--gray-200)">
+            <div></div>
+            <div style="font-size:9px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.8px">Month</div>
+            <div class="emi-cols" style="min-width:180px">
+              <div style="font-size:9px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.8px">Interest</div>
+              <div style="font-size:9px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.8px">Principal</div>
+              <div style="font-size:9px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.8px">EMI</div>
+            </div>
+          </div>
+          <div class="sch-body" id="e-schedule"></div>
+        </div>
+      </div>
+      <div>
+        <div class="card summary-card" style="margin-bottom:1.25rem">
+          <div class="smc-row">
+            <span class="smc-label">Loan Amount</span>
+            <div class="smc-right">
+              <div class="smc-value" id="e-bd-p">₹0</div>
+              <div class="smc-sub">Tenure: 24 Months</div>
+            </div>
+          </div>
+          <div class="smc-divider" data-tenure="Reducing Balance"></div>
+          <div class="smc-row">
+            <span class="smc-label">Total Interest</span>
+            <div class="smc-right">
+              <div class="smc-value smc-payout" id="e-bd-int">₹0</div>
+              <div class="smc-gain" id="e-bd-gain">Total outflow: ₹0</div>
+            </div>
+          </div>
+          <div class="smc-period-box smc-period-box-teal">
+            <span class="smc-period-lbl">Fixed Monthly EMI</span>
+            <span class="smc-period-val smc-period-val-teal" id="e-bd-emi">₹0/mo</span>
+          </div>
+        </div>
+        <div class="result-teal">
+          <div class="r-label">Fixed Monthly EMI (Reducing Balance)</div>
+          <div class="r-value" id="e-emi">₹0<span style="font-size:1.1rem;font-weight:600;opacity:.7">/mo</span></div>
+          <div class="r-gain" id="e-gain">₹0 total interest paid</div>
+          <div class="r-note">
+            <div class="r-note-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+            <div class="r-note-text"><strong>Principal + Interest both in each EMI</strong>Interest reduces every month as balance reduces. Fully paid off in 24 months.</div>
+          </div>
+          <div class="metrics">
+            <div class="mbox"><div class="mbox-val" id="e-m1">₹0</div><div class="mbox-lbl">Fixed EMI</div></div>
+            <div class="mbox"><div class="mbox-val" id="e-m2">₹0</div><div class="mbox-lbl">Total Interest</div></div>
+            <div class="mbox"><div class="mbox-val" id="e-m3">0%</div><div class="mbox-lbl">IRR p.a.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="disclaimer">* Reducing balance EMI — fixed monthly payment includes both principal and interest. Interest calculated on outstanding balance each month.<br>Rate: 1.3888%/month on reducing balance. Balance reaches zero at end of month 24. Indicative figures only.</div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- WHY SHAREPAL -->
+<section class="why">
+  <div class="section-wrap">
+    <div class="eyebrow">Why SharePal</div>
+    <div class="sec-h">Three Ways to Earn</div>
+    <div class="sec-p">Pick the payout structure that suits your cashflow — all fully managed by SharePal.</div>
+    <div class="feat-grid">
+      <div class="feat">
+        <div class="feat-ic" style="background:var(--blue-l)"><svg viewBox="0 0 24 24" stroke="var(--blue)"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+        <div class="feat-t">Lump Sum at Maturity</div>
+        <div class="feat-d">Maximise your total earning — everything paid as one big payout at the end of 24 months.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-ic" style="background:var(--blue-l)"><svg viewBox="0 0 24 24" stroke="var(--blue)"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div class="feat-t">Monthly Payout</div>
+        <div class="feat-d">Interest earned every month for regular income. Full principal returned at the end.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-ic" style="background:var(--teal-l)"><svg viewBox="0 0 24 24" stroke="var(--teal)"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <div class="feat-t">Reducing Balance EMI</div>
+        <div class="feat-d">Fixed monthly EMI with both principal + interest. Balance reduces to zero in 24 months.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <h2>Ready to Start Earning?</h2>
+  <p>Join hundreds of partners growing their wealth through high-demand rental assets</p>
+  <a href="#" class="cta-btn">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    Start Earning
+  </a>
+</section>
+
+<footer>
+  <strong>SharePal</strong> &nbsp;·&nbsp; © 2025 Madam Ventures LLP &nbsp;·&nbsp; Made with ♥ in India
+</footer>
+
+<script>
+const RATE  = 0.013888; // 1.3888% per month
+const MONTHS = 24;
+
+function fmt(n){ return '₹'+Math.round(n).toLocaleString('en-IN'); }
+function fmtD(n){ return '₹'+n.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,','); }
+function fmtS(n){
+  n=Math.round(n);
+  if(n>=10000000) return '₹'+(n/10000000).toFixed(1)+'Cr';
+  if(n>=100000)   return '₹'+(n/100000).toFixed(1)+'L';
+  if(n>=1000)     return '₹'+(n/1000).toFixed(0)+'K';
+  return '₹'+n;
+}
+
+function switchMode(mode){
+  ['lumpsum','monthly','emi'].forEach(m=>{
+    document.getElementById('panel-'+m).classList.toggle('visible', m===mode);
+  });
+  document.getElementById('btn-lumpsum').className ='toggle-btn'+(mode==='lumpsum'?' active-ls':'');
+  document.getElementById('btn-monthly').className  ='toggle-btn'+(mode==='monthly'?' active-mp':'');
+  document.getElementById('btn-emi').className      ='toggle-btn'+(mode==='emi'?' active-emi':'');
+}
+
+// ══ IRR CALCULATOR (Newton-Raphson, monthly cashflows → annualised) ══
+// cashflows: array where cashflows[0] = -investment, rest = monthly receipts
+function calcIRR(cashflows){
+  let r = 0.01; // initial guess: 1% per month
+  for(let i=0;i<200;i++){
+    let npv=0, dnpv=0;
+    for(let t=0;t<cashflows.length;t++){
+      npv  += cashflows[t] / Math.pow(1+r, t);
+      dnpv -= t * cashflows[t] / Math.pow(1+r, t+1);
+    }
+    const rNew = r - npv/dnpv;
+    if(Math.abs(rNew-r)<1e-10){ r=rNew; break; }
+    r=rNew;
+  }
+  // Annualise: (1 + monthly_IRR)^12 - 1
+  const annualIRR = (Math.pow(1+r,12)-1)*100;
+  return annualIRR.toFixed(2);
+}
+
+// ══ LUMP SUM ══
+function lSetAmt(v){ document.getElementById('l-principal').value=v; calcLumpsum(); }
+function calcLumpsum(){
+  let p = parseFloat(document.getElementById('l-principal').value)||0;
+  const err = document.getElementById('l-err');
+  if(p > 0 && p < 500000){ err.style.display='block'; p=0; } else { err.style.display='none'; }
+
+  // MONTHLY COMPOUNDING: P × (1 + r)^n
+  const total = p * Math.pow(1 + RATE, MONTHS);
+  const totalEarning = total - p;
+
+  // IRR cashflows: invest -p at t=0, receive compounded total at t=24
+  let cfs = new Array(MONTHS+1).fill(0);
+  cfs[0] = -p;
+  cfs[MONTHS] = total;
+  const irr = p>0 ? calcIRR(cfs) : '0.00';
+
+  document.getElementById('l-total').textContent  = fmt(total);
+  document.getElementById('l-gain').textContent   = '+'+fmt(totalEarning)+' total earning (compounded)';
+  document.getElementById('l-m1').textContent     = fmtS(p);
+  document.getElementById('l-m2').textContent     = fmtS(totalEarning);
+  document.getElementById('l-m3').textContent     = irr+'%';
+  document.getElementById('l-bd-p').textContent   = fmt(p);
+  document.getElementById('l-bd-total').textContent = fmt(total);
+  document.getElementById('l-bd-gain').textContent  = 'Total Gain: +'+fmt(totalEarning);
+  document.getElementById('l-bd-period').textContent = fmt(total);
+  document.getElementById('l-irr-badge').textContent = irr+'%';
+  document.getElementById('hero-irr').textContent    = irr+'%';
+
+  let html=`<div class="sch-row">
+    <div class="sch-num sch-num-blue">★</div>
+    <div class="sch-info"><div class="sch-name">Day 0 — You Invest</div><div class="sch-sub">${fmt(p)} locked into SharePal rental assets</div></div>
+    <div class="sch-amt" style="color:var(--gray-400)">—</div>
+  </div>`;
+  for(let mo=1;mo<MONTHS;mo++){
+    const bal = p * Math.pow(1+RATE, mo);
+    html+=`<div class="sch-row">
+      <div class="sch-num sch-num-blue">${mo}</div>
+      <div class="sch-info"><div class="sch-name">Month ${mo}</div><div class="sch-sub">Compounding balance — funds locked in</div></div>
+      <div class="sch-amt" style="color:var(--gray-400)">${fmt(bal)}</div>
+    </div>`;
+  }
+  html+=`<div class="sch-row sch-row-final-blue">
+    <div class="sch-num sch-num-blue">${MONTHS}</div>
+    <div class="sch-info">
+      <div class="sch-name">Month ${MONTHS} — Maturity 🎉 <span class="final-tag final-tag-blue">LUMP SUM</span></div>
+      <div class="sch-sub">${fmt(p)} principal + ${fmt(totalEarning)} compounded earning</div>
+    </div>
+    <div class="sch-amt">${fmt(total)}</div>
+  </div>`;
+  document.getElementById('l-schedule').innerHTML = html;
+}
+
+// ══ MONTHLY PAYOUT ══
+function mSetAmt(v){ document.getElementById('m-principal').value=v; calcMonthly(); }
+function calcMonthly(){
+  let p = parseFloat(document.getElementById('m-principal').value)||0;
+  const err = document.getElementById('m-err');
+  if(p > 0 && p < 500000){ err.style.display='block'; p=0; } else { err.style.display='none'; }
+  const monthlyInt = p * RATE;
+  const totalInt   = monthlyInt * MONTHS;
+  const totalReceived = p + totalInt;
+
+  // IRR cashflows: -p at t=0, monthlyInt for months 1-23, monthlyInt+p at t=24
+  let cfs = [];
+  cfs.push(-p);
+  for(let mo=1;mo<=MONTHS;mo++){
+    cfs.push(mo===MONTHS ? monthlyInt+p : monthlyInt);
+  }
+  const irr = p>0 ? calcIRR(cfs) : '0.00';
+
+  document.getElementById('m-monthly').innerHTML   = fmt(monthlyInt)+'<span style="font-size:1.1rem;font-weight:600;opacity:.7">/mo</span>';
+  document.getElementById('m-gain').textContent    = '+'+fmt(totalInt)+' total earning';
+  document.getElementById('m-when').textContent    = fmt(monthlyInt)+' payout/month for '+(MONTHS-1)+' months';
+  document.getElementById('m-m1').textContent      = fmtS(monthlyInt);
+  document.getElementById('m-m2').textContent      = fmtS(totalInt);
+  document.getElementById('m-m3').textContent      = irr+'%';
+  document.getElementById('m-bd-p').textContent    = fmt(p);
+  document.getElementById('m-bd-total').textContent = fmt(totalReceived);
+  document.getElementById('m-bd-gain').textContent  = 'Total Gain: +'+fmt(totalInt);
+  document.getElementById('m-bd-period').textContent = fmt(monthlyInt)+'/mo';
+  document.getElementById('m-irr-badge').textContent = irr+'%';
+
+  let html='';
+  for(let mo=1;mo<=MONTHS;mo++){
+    const isFinal = mo===MONTHS;
+    const amt = isFinal ? monthlyInt+p : monthlyInt;
+    const rowClass = isFinal?'sch-row sch-row-final-blue':'sch-row';
+    const finalTag = isFinal?`<span class="final-tag final-tag-blue">+PRINCIPAL</span>`:'';
+    const sub = isFinal
+      ? `${fmt(monthlyInt)} payout + ${fmt(p)} principal returned`
+      : `Monthly payout`;
+    html+=`<div class="${rowClass}">
+      <div class="sch-num sch-num-blue">${mo}</div>
+      <div class="sch-info">
+        <div class="sch-name">Month ${mo} ${finalTag}</div>
+        <div class="sch-sub">${sub}</div>
+      </div>
+      <div class="sch-amt">${fmt(amt)}</div>
+    </div>`;
+  }
+  document.getElementById('m-schedule').innerHTML = html;
+}
+
+// ══ EMI (REDUCING BALANCE) ══
+function eSetAmt(v){ document.getElementById('e-principal').value=v; calcEMI(); }
+function calcEMI(){
+  let p = parseFloat(document.getElementById('e-principal').value)||0;
+  const err = document.getElementById('e-err');
+  if(p > 0 && p < 500000){ err.style.display='block'; p=0; } else { err.style.display='none'; }
+  const r = RATE;
+  const n = MONTHS;
+
+  // Standard reducing balance EMI formula
+  const emi = p>0 ? p * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1) : 0;
+  const totalPaid = emi * n;
+  const totalInt  = totalPaid - p;
+
+  // IRR cashflows: -p at t=0, fixed emi each month for 24 months
+  let cfs = [-p];
+  for(let i=0;i<n;i++) cfs.push(emi);
+  const irr = p>0 ? calcIRR(cfs) : '0.00';
+
+  document.getElementById('e-emi').innerHTML    = fmt(emi)+'<span style="font-size:1.1rem;font-weight:600;opacity:.7">/mo</span>';
+  document.getElementById('e-gain').textContent = fmt(totalInt)+' total interest paid';
+  document.getElementById('e-m1').textContent   = fmtS(emi);
+  document.getElementById('e-m2').textContent   = fmtS(totalInt);
+  document.getElementById('e-m3').textContent   = irr+'%';
+  document.getElementById('e-bd-p').textContent  = fmt(p);
+  document.getElementById('e-bd-int').textContent = fmt(totalInt);
+  document.getElementById('e-bd-gain').textContent = 'Total outflow: '+fmt(totalPaid);
+  document.getElementById('e-bd-emi').textContent  = fmt(emi)+'/mo';
+  document.getElementById('e-irr-badge').textContent = irr+'%';
+
+  // Build amortisation schedule
+  let html='';
+  let balance = p;
+  for(let mo=1;mo<=MONTHS;mo++){
+    const intPart = balance * r;
+    const priPart = emi - intPart;
+    balance -= priPart;
+    if(balance < 0) balance = 0;
+    const isFinal = mo===MONTHS;
+    const rowClass = isFinal?'sch-row-emi sch-row-final-teal':'sch-row-emi';
+    html+=`<div class="${rowClass}">
+      <div class="sch-num sch-num-teal">${mo}</div>
+      <div class="sch-info">
+        <div class="sch-name">Month ${mo}${isFinal?' 🎉':''}</div>
+        <div class="sch-sub">Balance after: ${fmt(Math.max(0,balance))}</div>
+      </div>
+      <div class="emi-cols" style="min-width:180px">
+        <div><div class="emi-col-val int">${fmt(intPart)}</div></div>
+        <div><div class="emi-col-val pri">${fmt(priPart)}</div></div>
+        <div><div class="emi-col-val emi">${fmt(emi)}</div></div>
+      </div>
+    </div>`;
+  }
+  document.getElementById('e-schedule').innerHTML = html;
+}
+
+// Init
+calcLumpsum();
+calcMonthly();
+calcEMI();
+</script>
+</body>
+</html>
